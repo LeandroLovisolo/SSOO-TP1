@@ -1,3 +1,7 @@
 # Binarios y código objeto
 *.o
 simusched
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
