@@ -1,3 +1,7 @@
+###############################################################################
+# Scheduler (Makefile original, salvo target "clean")                         #
+###############################################################################
+
 export LC_ALL=C
 CXXFLAGS= -Wall -pedantic -g -ggdb
 LDFLAGS= -lpthread
@@ -24,6 +28,16 @@ tasks.o: tasks.cpp tasks.h basetask.h
 .PHONY: clean
 clean:
 	rm -f $(OBJS) $(MAIN)
+	rm -f informe.pdf tex/*.pdf tex/*.aux tex/*.log tex/*.toc
 
 .PHONY: new
 new: clean all
+
+###############################################################################
+# Informe                                                                     #
+###############################################################################
+
+informe.pdf: tex/*.tex
+	cd tex; pdflatex -interactive=nonstopmode -halt-on-error informe.tex
+	cd tex; pdflatex -interactive=nonstopmode -halt-on-error informe.tex
+	cp tex/informe.pdf .
