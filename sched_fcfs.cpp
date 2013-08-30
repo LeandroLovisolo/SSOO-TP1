@@ -37,7 +37,7 @@ void SchedFCFS::unblock(int pid) {
 }
 
 int SchedFCFS::tick(int cpu, const enum Motivo m) {
-	if(m == EXIT) {
+	if(m == EXIT || tareaActivaCore[cpu] == IDLE_TASK) {
 		if(!tareasEnEspera.empty()) {
 			tareaActivaCore[cpu] = tareasEnEspera.front();
 			tareasEnEspera.pop();
