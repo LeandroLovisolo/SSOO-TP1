@@ -4,34 +4,34 @@
 
 using namespace std;
 
-/*Solución: Tengo una cola por core y al llegar tareas las voy poniendo
-en la cola con menos tareas
+/* Solucion: Una cola FIFO para los dos cores, cada uno agarra una tarea
+y no la suelta hasta terminarla. Cuando termina saca otra de la cola.
 */
+
 // FCFS recibe la cantidad de cores.
 SchedFCFS::SchedFCFS(vector<int> argn) {
 	//Creo una lista para cada core
 	for(int i = 0; i < argn[0]; ++i) {
-		queue<int>* nuevaCola = new queue<int>();
-		colasPorCore.push_back(nuevaCola);
+		tareaActivaCore.push_back(IDLE_TASK);
 	}
 }
 
 SchedFCFS::~SchedFCFS() {
-	for (unsigned int i = 0; i < colasPorCore.size(); ++i) {
-		delete colasPorCore[i];
-	}
 }
 
 void SchedFCFS::load(int pid) {
-	//Le doy el proceso al core con menos tareas
-	unsigned int min = colasPorCore[0]->size(), minPos = 0;
-	for(unsigned int i = 1; i < colasPorCore.size(); ++i) {
-		if(colasPorCore[i]->size() > min) {
-			min = colasPorCore[i]->size();
-			minPos = i;
+	//Recorro los cores para ver si tienen alguna tarea activa, si tienen
+	//pusheo la tarea a la cola, si no, la pongo como activa
+	bool seEncolaTarea = true;
+	for(unsigned int i = 1; i < tareaActivaCore.size(); ++i) {
+		if(tareaActivaCore[i] == IDLE_TASK) {
+			tareaActivaCore[i] = pid;
+			seEncolaTarea = false;
 		}
 	}
-	colasPorCore[minPos]->push(pid);
+	if(seEncolaTarea) {
+		tareasEnEspera.push(pid);
+	}
 }
 
 void SchedFCFS::unblock(int pid) {
@@ -39,16 +39,15 @@ void SchedFCFS::unblock(int pid) {
 }
 
 int SchedFCFS::tick(int cpu, const enum Motivo m) {
-	if(m == TICK) {
-		if(colasPorCore[cpu]->size() == 0) return IDLE_TASK;
-	}
 	if(m == EXIT) {
-		colasPorCore[cpu]->pop();
-		if(colasPorCore[cpu]->size() == 0) return IDLE_TASK;
-		return colasPorCore[cpu]->front();
+		if(!tareasEnEspera.empty()) {
+			tareaActivaCore[cpu] = tareasEnEspera.front();
+			tareasEnEspera.pop();
+		}
+		else {
+			tareaActivaCore[cpu] = IDLE_TASK;
+		}
 	}
-	else {
-		return colasPorCore[cpu]->front();
-	}
+	return tareaActivaCore[cpu];
 
 }
