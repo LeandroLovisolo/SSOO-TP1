@@ -20,7 +20,7 @@ void TaskAlterno(int pid, vector<int> params) { // params: ms_pid, ms_io, ms_pid
 	}
 }
 
-void TaskConsola(int pid, vector<int> params) {
+void TaskConsola(int pid, vector<int> params) { //params: n (llamadas), bmin y bmax (tiempo)
 	srand(time(0));
 	for(int i=0; i<params[0]; i++) {
 		int duracion = rand() % (params[2]+1 - params[1]) + params[1];
@@ -35,4 +35,5 @@ void tasks_init(void) {
 	register_task(TaskCPU, 1);
 	register_task(TaskIO, 2);
 	register_task(TaskAlterno, -1);
+	register_task(TaskConsola, 3);
 }
