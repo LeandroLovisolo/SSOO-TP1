@@ -1,4 +1,6 @@
 #include "tasks.h"
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -18,7 +20,13 @@ void TaskAlterno(int pid, vector<int> params) { // params: ms_pid, ms_io, ms_pid
 	}
 }
 
-
+void TaskConsola(int pid, vector<int> params) {
+	srand(time(0));
+	for(int i=0; i<params[0]; i++) {
+		int duracion = rand() % (params[2]+1 - params[1]) + params[1];
+		uso_IO(pid, duracion);
+	}
+}
 
 void tasks_init(void) {
 	/* Todos los tipos de tareas se deben registrar acá para poder ser usadas.
