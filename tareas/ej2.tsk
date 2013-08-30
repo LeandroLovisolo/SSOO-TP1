@@ -1,0 +1,4 @@
+@0:
+TaskCPU 1000
+TaskConsola 3 100 200
+TaskConsola 5 150 270
