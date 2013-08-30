@@ -11,9 +11,7 @@ y no la suelta hasta terminarla. Cuando termina saca otra de la cola.
 // FCFS recibe la cantidad de cores.
 SchedFCFS::SchedFCFS(vector<int> argn) {
 	//Creo una lista para cada core
-	for(int i = 0; i < argn[0]; ++i) {
-		tareaActivaCore.push_back(IDLE_TASK);
-	}
+	tareaActivaCore = vector<int>(argn[0], IDLE_TASK);
 }
 
 SchedFCFS::~SchedFCFS() {
