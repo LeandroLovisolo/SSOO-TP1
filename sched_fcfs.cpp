@@ -1,7 +1,6 @@
 #include <vector>
 #include <queue>
 #include "sched_fcfs.h"
-#include <iostream>
 
 using namespace std;
 
@@ -25,7 +24,6 @@ SchedFCFS::~SchedFCFS() {
 
 void SchedFCFS::load(int pid) {
 	//Le doy el proceso al core con menos tareas
-	cout << "Cargo tarea " << pid << endl;
 	unsigned int min = colasPorCore[0]->size(), minPos = 0;
 	for(unsigned int i = 1; i < colasPorCore.size(); ++i) {
 		if(colasPorCore[i]->size() > min) {
@@ -44,11 +42,7 @@ int SchedFCFS::tick(int cpu, const enum Motivo m) {
 	if(m == TICK) {
 		if(colasPorCore[cpu]->size() == 0) return IDLE_TASK;
 	}
-	cout << "Tipo tick cpu=" << cpu << endl;
-	if(m == BLOCK) cout << "Tipo block cpu=" << cpu << endl;
 	if(m == EXIT) {
-		cout << "Tipo Exit" << endl;
-		cout << "Va a sacar a tarea " << colasPorCore[cpu]->front() << endl;
 		colasPorCore[cpu]->pop();
 		if(colasPorCore[cpu]->size() == 0) return IDLE_TASK;
 		return colasPorCore[cpu]->front();
