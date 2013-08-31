@@ -14,7 +14,9 @@ class SchedRR2 : public SchedBase {
 		virtual int tick(int cpu, const enum Motivo m);
 
 	private:
-		int next(int cpu);
+		std::vector<int> quantumCore;
+		std::vector<int> quantumRestanteCore;
+		std::vector<std::queue<int>* > colasTareasPorCore;
 };
 
 #endif
