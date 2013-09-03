@@ -6,14 +6,26 @@
 
 using namespace std;
 
+/*
+Solución: se tiene una cola por core.
+La tarea que se está ejecutando está en el frente
+de la cola.
+Cuando se necesita pasar a la próxima, se desencola, se pone al final de la cola
+y se pasa a ejecutar la siguiente.
+Para las tareas bloqueadas se utiliza "map" (esto es necesario ya que se debe
+conocer de que procesador provenía la tarea bloqueada).
+
+*/
+
 SchedRR2::SchedRR2(vector<int> argn) {
 	// Round robin recibe la cantidad de cores y sus cpu_quantum por parámetro
-	//Inicializo el vector con los quantum para cada core
+	//Inicializo el vector con los quantum para cada core;
 	for(int i = 1; i < argn[0]; ++i) {
 		colasTareasPorCore.push_back(new queue<int>());
 		quantumCore.push_back(argn[i]);
 		quantumRestanteCore.push_back(argn[i]);
 	}
+	tareasBloqueadasPorCore = vector<int>(0, argn[0]);
 }
 
 SchedRR2::~SchedRR2() {
@@ -31,7 +43,7 @@ void SchedRR2::load(int pid) {
 	unsigned int min = colasTareasPorCore[0]->size();
 	unsigned int minPos = 0;
 	for(unsigned int i = 1; i < colasTareasPorCore.size(); ++i) {
-		if(colasTareasPorCore[i]->size() < min) {
+		if(colasTareasPorCore[i]->size() + tareasBloqueadasPorCore[i] < min) {
 			min = colasTareasPorCore[i]->size();
 			minPos = i;
 		}
@@ -41,6 +53,7 @@ void SchedRR2::load(int pid) {
 
 void SchedRR2::unblock(int pid) {
 	colasTareasPorCore[tareasBloqueadas[pid]]->push(pid);
+	++tareasBloqueadasPorCore[tareasBloqueadas[pid]];
 }
 
 int SchedRR2::tick(int cpu, const enum Motivo m) {
@@ -55,18 +68,23 @@ int SchedRR2::tick(int cpu, const enum Motivo m) {
 	else if(m == TICK) {
 		if(quantumRestanteCore[cpu] == 0) {
 			if(!colasTareasPorCore[cpu]->empty()) {
-				int tareaACorrer = colasTareasPorCore[cpu]->front();
+				int tareaAnterior = colasTareasPorCore[cpu]->front();
 				colasTareasPorCore[cpu]->pop();
+				colasTareasPorCore[cpu]->push(tareaAnterior);
+				tareaACorrer = colasTareasPorCore[cpu]->front();
 				quantumRestanteCore[cpu] = quantumCore[cpu];
 			}
 		}
 		else {
 			quantumRestanteCore[cpu]--;
-			return current_pid(cpu);
+			tareaACorrer = current_pid(cpu);
 		}
 	}
-	else { //Relacionado al block FALTA
-		tareasBloqueadas[pid] = cpu;
-		return current_pid(cpu);
+	else { //Relacionado al BLOCK
+		tareasBloqueadas[current_pid(cpu)] = cpu;
+		++tareasBloqueadasPorCore[cpu];
+		colasTareasPorCore[cpu]->pop();
+		tareaACorrer = current_pid(cpu);
 	}
+	return tareaACorrer;
 }
