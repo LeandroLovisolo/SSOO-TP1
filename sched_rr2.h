@@ -5,6 +5,7 @@
 #include <queue>
 #include "basesched.h"
 
+
 class SchedRR2 : public SchedBase {
 	public:
 		SchedRR2(std::vector<int> argn);
@@ -12,11 +13,12 @@ class SchedRR2 : public SchedBase {
 		virtual void load(int pid);
 		virtual void unblock(int pid);
 		virtual int tick(int cpu, const enum Motivo m);
-
 	private:
 		std::vector<int> quantumCore;
 		std::vector<int> quantumRestanteCore;
 		std::vector<std::queue<int>* > colasTareasPorCore;
+		std::map<int, int> tareasBloqueadas;
+		int next(int cpu);
 };
 
 #endif

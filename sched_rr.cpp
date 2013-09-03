@@ -39,7 +39,7 @@ int SchedRR::tick(int cpu, const enum Motivo m) {
 	}
 	else if(m == TICK || m == BLOCK) {
 		//Si se le termino el quantum, cambio de tarea (si existe otra)
-		if(quantumRestanteCore[cpu] == 0) {
+		if(quantumRestanteCore[cpu] == 0 || m == BLOCK) {
 			if(!tareasEnEspera.empty()) {
 				tareaAEjecutar = tareasEnEspera.front();
 				tareasEnEspera.pop();

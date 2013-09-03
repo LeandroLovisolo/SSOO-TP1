@@ -22,6 +22,9 @@ SchedRR2::~SchedRR2() {
 	}
 }
 
+int SchedRR2::next(int cpu) {
+	return 0;
+}
 
 void SchedRR2::load(int pid) {
 	//Cargo la nueva tarea en el CPU con menos tareas
@@ -37,20 +40,17 @@ void SchedRR2::load(int pid) {
 }
 
 void SchedRR2::unblock(int pid) {
+	colasTareasPorCore[tareasBloqueadas[pid]]->push(pid);
 }
 
 int SchedRR2::tick(int cpu, const enum Motivo m) {
-	if(m == EXIT || current_pid(cpu) == IDLE_TASK) {
+	int tareaACorrer = IDLE_TASK;
+	if(m == EXIT) {
+		colasTareasPorCore[cpu]->pop();
 		if(!colasTareasPorCore[cpu]->empty()) {
-			int tareaACorrer = colasTareasPorCore[cpu]->front();
-			colasTareasPorCore[cpu]->pop();
-			quantumRestanteCore[cpu] = quantumCore[cpu];
-			return tareaACorrer;
-
+			tareaACorrer = colasTareasPorCore[cpu]->front();
 		}
-		else {
-			return IDLE_TASK;
-		}
+		quantumRestanteCore[cpu] = quantumCore[cpu];
 	}
 	else if(m == TICK) {
 		if(quantumRestanteCore[cpu] == 0) {
@@ -58,11 +58,6 @@ int SchedRR2::tick(int cpu, const enum Motivo m) {
 				int tareaACorrer = colasTareasPorCore[cpu]->front();
 				colasTareasPorCore[cpu]->pop();
 				quantumRestanteCore[cpu] = quantumCore[cpu];
-				return tareaACorrer;
-			}
-			else {
-				quantumRestanteCore[cpu] = quantumCore[cpu];
-				return current_pid(cpu);
 			}
 		}
 		else {
@@ -71,6 +66,7 @@ int SchedRR2::tick(int cpu, const enum Motivo m) {
 		}
 	}
 	else { //Relacionado al block FALTA
+		tareasBloqueadas[pid] = cpu;
 		return current_pid(cpu);
 	}
 }
