@@ -8,8 +8,6 @@ using namespace std;
 
 SchedRR::SchedRR(vector<int> argn) {
 	// Round robin recibe la cantidad de cores y sus cpu_quantum por parámetro
-	//Inicializo tareas activas por core
-	tareaActivaCore = vector<int>(argn[0], IDLE_TASK);
 	//Inicializo el vector con los quantum para cada core
 	for(int i = 1; i < argn[0]; ++i) {
 		quantumCore.push_back(argn[i]);
@@ -27,27 +25,27 @@ void SchedRR::load(int pid) {
 }
 
 void SchedRR::unblock(int pid) {
+	tareasEnEspera.push(pid);
 }
 
 int SchedRR::tick(int cpu, const enum Motivo m) {
-	if(m == EXIT || tareaActivaCore[cpu] == IDLE_TASK) {
+	int tareaAEjecutar = IDLE_TASK;
+	if(m == EXIT || current_pid(cpu) == IDLE_TASK) {
 		if(!tareasEnEspera.empty()) {
-			tareaActivaCore[cpu] = tareasEnEspera.front();
+			tareaAEjecutar =  tareasEnEspera.front();
 			tareasEnEspera.pop();
-		}
-		else {
-			tareaActivaCore[cpu] = IDLE_TASK;
 		}
 		quantumRestanteCore[cpu] = quantumCore[cpu];
 	}
-	else if(m == TICK) {
+	else if(m == TICK || m == BLOCK) {
 		//Si se le termino el quantum, cambio de tarea (si existe otra)
 		if(quantumRestanteCore[cpu] == 0) {
 			if(!tareasEnEspera.empty()) {
-				int tareaNueva = tareasEnEspera.front();
+				tareaAEjecutar = tareasEnEspera.front();
 				tareasEnEspera.pop();
-				tareasEnEspera.push(tareaActivaCore[cpu]);
-				tareaActivaCore[cpu] = tareaNueva;
+				if(m == BLOCK) {
+					tareasEnEspera.push(current_pid(cpu));
+				}
 			}
 			quantumRestanteCore[cpu] = quantumCore[cpu];
 		}
@@ -55,8 +53,5 @@ int SchedRR::tick(int cpu, const enum Motivo m) {
 			quantumRestanteCore[cpu]--;
 		}
 	}
-	else if(m == BLOCK) {
-		//Ver que hacer con el bloqueo
-	}
-	return tareaActivaCore[cpu];
+	return tareaAEjecutar;
 }

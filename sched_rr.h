@@ -15,7 +15,6 @@ class SchedRR : public SchedBase {
 
 	private:
 		std::queue<int> tareasEnEspera;
-		std::vector<int> tareaActivaCore;
 		std::vector<int> quantumCore;
 		std::vector<int> quantumRestanteCore;
 };
