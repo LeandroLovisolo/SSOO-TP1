@@ -18,7 +18,7 @@ class SchedRR2 : public SchedBase {
 		std::vector<int> quantumCore;
 		std::vector<int> quantumRestanteCore;
 		std::vector<int> tareasBloqueadasPorCore;
-		std::vector<std::queue<int>* > colasTareasPorCore;
+		std::vector<std::queue<int> > colasTareasPorCore;
 		std::map<int, int> tareasBloqueadas;
 		int next(int cpu);
 };
