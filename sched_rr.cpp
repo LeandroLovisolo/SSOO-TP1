@@ -30,7 +30,6 @@ void SchedRR::load(int pid) {
 
 void SchedRR::unblock(int pid) {
 	tareasEnEspera.push(pid);
-	cout << "Tarea " << pid << " desbloqueada" << endl;
 }
 
 int SchedRR::tick(int cpu, const enum Motivo m) {
@@ -41,6 +40,7 @@ int SchedRR::tick(int cpu, const enum Motivo m) {
 			tareasEnEspera.pop();
 		}
 		quantumRestanteCore[cpu] = quantumCore[cpu];
+
 	}
 	else if(m == TICK) {
 		//Si se le termino el quantum, cambio de tarea (si existe otra)
@@ -50,6 +50,9 @@ int SchedRR::tick(int cpu, const enum Motivo m) {
 				tareasEnEspera.pop();
 				tareasEnEspera.push(current_pid(cpu));
 			}
+			else {
+				tareaAEjecutar = current_pid(cpu);
+			}
 			quantumRestanteCore[cpu] = quantumCore[cpu];
 		}
 		else {
@@ -57,14 +60,11 @@ int SchedRR::tick(int cpu, const enum Motivo m) {
 			tareaAEjecutar = current_pid(cpu);
 		}
 	}
-	/*
 	else {
-		cout << "Tarea " << current_pid(cpu) << " bloqueada" << endl;
 		if(!tareasEnEspera.empty()) {
 			tareaAEjecutar = tareasEnEspera.front();
 			tareasEnEspera.pop();
 		}
 	}
-	*/
 	return tareaAEjecutar;
 }
