@@ -1,6 +1,7 @@
-#include "tasks.h"
 #include <cstdlib>
 #include <ctime>
+
+#include "tasks.h"
 
 using namespace std;
 
@@ -21,7 +22,6 @@ void TaskAlterno(int pid, vector<int> params) { // params: ms_pid, ms_io, ms_pid
 }
 
 void TaskConsola(int pid, vector<int> params) { // params: n (llamadas), bmin y bmax (tiempo)
-	srand(time(0));
 	for(int i=0; i<params[0]; i++) {
 		int duracion = rand() % (params[2]+1 - params[1]) + params[1];
 		uso_IO(pid, duracion);
@@ -49,6 +49,8 @@ void TaskBatch(int pid, vector<int> params) { // params: total_cpu, cant_bloqueo
 }
 
 void tasks_init(void) {
+	srand(time(0));
+
 	/* Todos los tipos de tareas se deben registrar acá para poder ser usadas.
 	 * El segundo parámetro indica la cantidad de parámetros que recibe la tarea
 	 * como un vector de enteros, o -1 para una cantidad de parámetros variable. */
