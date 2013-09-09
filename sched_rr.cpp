@@ -9,14 +9,14 @@ using namespace std;
 SchedRR::SchedRR(vector<int> argn) {
 	// Round robin recibe la cantidad de cores y sus cpu_quantum por parámetro
 	//Inicializo el vector con los quantum para cada core
-	cout << "Cores " << argn[0] << endl;
-	cout << "IDLE " << IDLE_TASK << endl;
+	// cout << "Cores " << argn[0] << endl;
+	// cout << "IDLE " << IDLE_TASK << endl;
 	for(int i = 1; i <= argn[0]; ++i) {
-		cout << "Qunatums " << argn[i] << endl;
+		// cout << "Qunatums " << argn[i] << endl;
 		quantumCore.push_back(argn[i]);
 		quantumRestanteCore.push_back(argn[i]);
 	}
-	cout << "Se crea" << endl;
+	// cout << "Se crea" << endl;
 }
 
 SchedRR::~SchedRR() {
