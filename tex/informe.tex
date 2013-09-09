@@ -169,9 +169,44 @@ Pendiente.
 
 
 \section{Ejercicio 2}
+El lote de tareas utilizado para el ejercicio es el siguiente:
+\begin{pseudo}
+	\State @0:
+	\State TaskCPU 1000
+	\State TaskConsola 3 100 200
+	\State TaskConsola 5 150 270
+\end{pseudo}
 
-Pendiente.
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=180mm]{../ejercicio2/FCFS1Core.png}
+\caption{Scheduler FCFS corriendo el lote de tareas con 1 core y 5 de penalidad por task switch}
+\label{overflow}
+\end{figure}
 
+Puede observarse como el único core del scheduler para esta ejecución del simulador corre la tarea 0 hasta que esta se termina (1000 ticks).
+
+Luego corre la tarea 1, la cuál realiza varios bloqueos y desbloqueos. Se puede notar el tiempo dedicado a hacer el task switch entre la tarea IDLE que corre mientras la tarea principal está bloqueada y la tarea principal.
+
+Termina su ejecución con la tarea 2 que también realiza bloqueos y desbloqueos, intercambiando entre esta y su tarea IDLE.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=180mm]{../ejercicio2/FCFS2Core.png}
+\caption{Scheduler FCFS corriendo el lote de tareas con 2 core y 5 de penalidad por task switch}
+\label{overflow}
+\end{figure}
+
+Puede observarse como en la figura 2, relacionada a la ejecución del simulador con 2 núcleos, como cada uno se comporta adecuadamente, tomando el core 1 la tarea 0, el core 2 la tarea 1 y ejecutándola hasta su finalización. Luego, como la tarea 1 finaliza antes que la 0, el core 1 toma la tarea 2 y la ejecuta.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=180mm]{../ejercicio2/FCFS3Core.png}
+\caption{Scheduler FCFS corriendo el lote de tareas con 3 core y 5 de penalidad por task switch}
+\label{overflow}
+\end{figure}
+
+Observando la figura 3, puede notarse como cáda core toma cada una de las 3 tareas y las ejecuta simultáneamente hasta su finalización.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Ejercicio 3                                                               %%
