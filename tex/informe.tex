@@ -179,7 +179,7 @@ El lote de tareas utilizado para el ejercicio es el siguiente:
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=180mm]{../ejercicio2/FCFS1Core.png}
+\includegraphics[width=175mm]{../ejercicio2/FCFS1Core.png}
 \caption{Scheduler FCFS corriendo el lote de tareas con 1 core y 5 de penalidad por task switch}
 \label{overflow}
 \end{figure}
@@ -192,16 +192,16 @@ Termina su ejecución con la tarea 2 que también realiza bloqueos y desbloqueos
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=180mm]{../ejercicio2/FCFS2Core.png}
+\includegraphics[width=175mm]{../ejercicio2/FCFS2Core.png}
 \caption{Scheduler FCFS corriendo el lote de tareas con 2 core y 5 de penalidad por task switch}
 \label{overflow}
 \end{figure}
 
-Puede observarse como en la figura 2, relacionada a la ejecución del simulador con 2 núcleos, como cada uno se comporta adecuadamente, tomando el core 1 la tarea 0, el core 2 la tarea 1 y ejecutándola hasta su finalización. Luego, como la tarea 1 finaliza antes que la 0, el core 1 toma la tarea 2 y la ejecuta.
+Puede observarse como en la figura 2, relacionada a la ejecución del simulador con 2 núcleos, como cada uno se comporta adecuadamente, tomando el core 0 la tarea 0, el core 1 la tarea 1 y ejecutándola hasta su finalización. Luego, como la tarea 1 finaliza antes que la 0, el core 0 toma la tarea 2 y la ejecuta.
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=180mm]{../ejercicio2/FCFS3Core.png}
+\includegraphics[width=175mm]{../ejercicio2/FCFS3Core.png}
 \caption{Scheduler FCFS corriendo el lote de tareas con 3 core y 5 de penalidad por task switch}
 \label{overflow}
 \end{figure}
@@ -224,9 +224,61 @@ Pendiente.
 
 
 \section{Ejercicio 4}
+El lote de tareas utilizado para la figura 4 es el siguiente:
+\begin{pseudo}
+	\State @0:
+	\State TaskCPU 200
+	\State TaskCPU 200
+	\State TaskCPU 200
+	\State TaskCPU 200
+\end{pseudo}
 
-Pendiente.
+Puede observarse en la figura 4 la ejecución del simulador con el Scheduler RoundRobin con 1 core con quantum 100 y penalidad de 5 para las task switch.
 
+El gráfico muestra como las 4 tareas se ejecutan de forma cíclica, se ejecuta la tarea 0 a la 3 (haciendo cambio de tareas debido a que se les acaba el quantum) y se repite nuevamente este ciclo. Este comportamiento cíclcio de ejecución es el correspondiente al de un algoritmo de scheduling RoundRobin.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=175mm]{../ejercicio4/SchedRR1Core.png}
+\caption{Scheduler RR corriendo el lote de tareas con 1 core con 100 de quantum y 5 de penalidad por task switch}
+\label{overflow}
+\end{figure}
+
+El lote de tareas utilizado para la figura 5 es el siguiente:
+\begin{pseudo}
+	\State @0:
+	\State TaskCPU 50
+	\State TaskCPU 200
+	\State TaskCPU 200
+	\State TaskCPU 200
+\end{pseudo}
+
+Puede notarse nuevamente, en el gráfico de la figura 5, el cambio cíclico y ordenado de las tareas. En este caso, al tener una tarea de menor duración al inicio en el core 0, este queda asimétrico en relación al tiempo y a la ejecución de tareas, haciendo que en la próxima recorrida del ciclo del algoritmo, este tome las tareas del core 1, recibiendo una penalización de 50 ticks.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=175mm]{../ejercicio4/SchedRR2Core.png}
+\caption{Scheduler RR corriendo el lote de tareas con 2 core de 100 de quantum cada uno y 50 de penalidad por task switch}
+\label{overflow}
+\end{figure}
+
+El lote de tareas utilizado para la figura 6 es el siguiente:
+\begin{pseudo}
+	\State @0:
+	\State TaskCPU 200
+	\State TaskIO 50 400
+	\State TaskCPU 200
+	\State TaskCPU 200
+\end{pseudo}
+
+Por último, para demostrar la correctitud de la implementación del scheduler RoundRobin ante tareas bloqueantes, en la figura 6, puede verse como la tarea 1 se bloquea a los 50 ticks; el scheduler la remueve del ciclo continuando la ejecución las tareas sin tenerla en cuenta hasta que se realiza su desbloqueo, se agrega nuevamente al ciclo y termina.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=175mm]{../ejercicio4/SchedRR2CoreIO.png}
+\caption{Scheduler RR corriendo el lote de tareas con 2 core de 100 de quantum cada uno, 50 de penalidad por task switch y una tarea bloqueante}
+\label{overflow}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Ejercicio 5                                                               %%
