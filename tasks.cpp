@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 
 #include "tasks.h"
 
@@ -48,6 +49,26 @@ void TaskBatch(int pid, vector<int> params) { // params: total_cpu, cant_bloqueo
 	}
 }
 
+void RandomTask(int pid, vector<int> params) { // max_operaciones, max_tiempo_cpu, max_tiempo_io, seed
+	srand(params[3]);
+	int cantOp = rand() % params[0];
+	vector<int> operaciones(cantOp, 0);
+	for(int i = 0; i < cantOp; i++) {
+		//0 cpu
+		if(rand() % 2 == 0) {
+			operaciones[i] = 0;
+		}
+		//1 i/o
+		else {
+			operaciones[i] = 1;
+		}
+	}
+	for(size_t i = 0; i < operaciones.size(); i++) {
+		if(operaciones[i] == 0) uso_CPU(pid, rand() % params[1]);
+		else uso_IO(pid, rand() % params[2]);
+	}
+}
+
 void tasks_init(void) {
 	srand(time(0));
 
@@ -58,5 +79,6 @@ void tasks_init(void) {
 	register_task(TaskIO, 2);
 	register_task(TaskAlterno, -1);
 	register_task(TaskConsola, 3);
+	register_task(RandomTask, 4);
 	register_task(TaskBatch, 2);
 }
