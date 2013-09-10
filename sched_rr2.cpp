@@ -63,7 +63,7 @@ int SchedRR2::tick(int cpu, const enum Motivo m) {
 		quantumRestanteCore[cpu] = quantumCore[cpu];
 	}
 	else if(m == TICK) {
-		if(quantumRestanteCore[cpu] == 0 || current_pid(cpu) == IDLE_TASK) {
+		if(quantumRestanteCore[cpu] == 0) {
 			if(!colasTareasPorCore[cpu].empty()) {
 				int tareaAnterior = colasTareasPorCore[cpu].front();
 				colasTareasPorCore[cpu].pop();
@@ -71,6 +71,9 @@ int SchedRR2::tick(int cpu, const enum Motivo m) {
 				tareaACorrer = colasTareasPorCore[cpu].front();
 				quantumRestanteCore[cpu] = quantumCore[cpu];
 			}
+		}
+		else if(current_pid(cpu) == IDLE_TASK && !colasTareasPorCore[cpu].empty()) {
+			tareaACorrer = colasTareasPorCore[cpu].front();
 		}
 		else {
 			quantumRestanteCore[cpu]--;
