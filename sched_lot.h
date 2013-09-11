@@ -27,7 +27,7 @@ class SchedLottery : public SchedBase {
 		std::map<int, int> tareasBloqueadas;
 		std::vector<tarea> tareasEnEjecucion;
 		std::vector<int> quantumRestanteCore;
-		int sysQuantum;
+		std::vector<int> sysQuantumCore;
 		int systemTickets;
 		int systemSeed;
 };

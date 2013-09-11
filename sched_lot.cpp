@@ -8,13 +8,13 @@ using namespace std;
 // El constructor recibe la cantidad de cores, el quantum y la semilla de la secuencia pseudo aleatoria.
 SchedLottery::SchedLottery(std::vector<int> argn) {
 	systemTickets = 0;				// Inicializo los tickets del sistema en 0.
-	sysQuantum = argn[1];
-	systemSeed = argn[2];
 	int cores = argn[0];
+	systemSeed = argn[cores+1];
 	tarea idle = {IDLE_TASK, 0};
-	// Seteo el quantum restante igual al inicial.
+	
 	for(int i = 0; i < cores; i++) {
-		quantumRestanteCore.push_back(sysQuantum);
+		sysQuantumCore.push_back(argn[i+1]);
+		quantumRestanteCore.push_back(argn[i+1]);
 		tareasEnEjecucion.push_back(idle);
 	}
 }
@@ -45,7 +45,7 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 			systemTickets-=(tareasEnEjecucion[cpu]).tickets;
 			(tareasEnEjecucion[cpu]).tickets = 1;
 		}
-		quantumRestanteCore[cpu] = sysQuantum;
+		quantumRestanteCore[cpu] = sysQuantumCore[cpu];
 	}
 	else if(m == TICK) {
 		quantumRestanteCore[cpu]--;
@@ -62,9 +62,9 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 				systemTickets-=(tareasEnEjecucion[cpu]).tickets;
 				(tareasEnEjecucion[cpu]).tickets = 1;
 				
-				quantumRestanteCore[cpu] = sysQuantum;
+				quantumRestanteCore[cpu] = sysQuantumCore[cpu];
 			} else {
-				quantumRestanteCore[cpu] = sysQuantum;
+				quantumRestanteCore[cpu] = sysQuantumCore[cpu];
 				tareaACorrer = current_pid(cpu);
 			}
 		}
@@ -76,7 +76,7 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 			systemTickets-=(tareasEnEjecucion[cpu]).tickets;
 			(tareasEnEjecucion[cpu]).tickets = 1;
 			
-			quantumRestanteCore[cpu] = sysQuantum;
+			quantumRestanteCore[cpu] = sysQuantumCore[cpu];
 		}
 		else {
 			tareaACorrer = current_pid(cpu);
@@ -85,7 +85,7 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 	else { //Relacionado al BLOCK
 		quantumRestanteCore[cpu]--;
 		// Compensamos a la tarea por consumir menos de su quantum.
-		tareasBloqueadas[current_pid(cpu)] = sysQuantum/(sysQuantum-quantumRestanteCore[cpu]);
+		tareasBloqueadas[current_pid(cpu)] = sysQuantumCore[cpu]/(sysQuantumCore[cpu]-quantumRestanteCore[cpu]);
 		if(!tareas.empty()) {
 			list<tarea>::iterator tareaElegida = lottery();
 			tareasEnEjecucion[cpu] = *tareaElegida;
@@ -94,7 +94,7 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 			systemTickets-=(tareasEnEjecucion[cpu]).tickets;
 			(tareasEnEjecucion[cpu]).tickets = 1;
 		}
-		quantumRestanteCore[cpu] = sysQuantum;
+		quantumRestanteCore[cpu] = sysQuantumCore[cpu];
 	}
 	return tareaACorrer;
 }
