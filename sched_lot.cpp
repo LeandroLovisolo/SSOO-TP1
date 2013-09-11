@@ -1,12 +1,13 @@
 #include <vector>
 #include <queue>
+#include <stdlib.h>
 #include "sched_lot.h"
 
 using namespace std;
 
 // El constructor recibe la cantidad de cores, el quantum y la semilla de la secuencia pseudo aleatoria.
 SchedLottery::SchedLottery(std::vector<int> argn) {
-	systemTickets = 0;					// Inicializo los tickets del sistema en 0.
+	systemTickets = 0;				// Inicializo los tickets del sistema en 0.
 	sysQuantum = argn[1];
 	systemSeed = argn[2];
 	int cores = argn[0];
@@ -37,7 +38,7 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 	int tareaACorrer = IDLE_TASK;
 	if(m == EXIT) {
 		if(!tareas.empty()) {
-			list<tarea>::iterator tareaElegida = lottery(systemSeed);
+			list<tarea>::iterator tareaElegida = lottery();
 			tareasEnEjecucion[cpu] = *tareaElegida;
 			tareaACorrer = tareaElegida->pid;
 			tareas.erase(tareaElegida);
@@ -54,7 +55,7 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 				tareas.push_back(tareasEnEjecucion[cpu]);
 				systemTickets+=tareas.back().tickets;
 				// Elegir una tarea nueva por lottery, ponerla a ejecutar y sacarla de la lista.
-				list<tarea>::iterator tareaElegida = lottery(systemSeed);
+				list<tarea>::iterator tareaElegida = lottery();
 				tareasEnEjecucion[cpu] = *tareaElegida;
 				tareaACorrer = tareaElegida->pid;
 				tareas.erase(tareaElegida);
@@ -68,7 +69,7 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 			}
 		}
 		else if(current_pid(cpu) == IDLE_TASK && !tareas.empty()) {
-			list<tarea>::iterator tareaElegida = lottery(systemSeed);
+			list<tarea>::iterator tareaElegida = lottery();
 			tareasEnEjecucion[cpu] = *tareaElegida;
 			tareaACorrer = tareaElegida->pid;
 			tareas.erase(tareaElegida);
@@ -86,7 +87,7 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 		// Compensamos a la tarea por consumir menos de su quantum.
 		tareasBloqueadas[current_pid(cpu)] = sysQuantum/(sysQuantum-quantumRestanteCore[cpu]);
 		if(!tareas.empty()) {
-			list<tarea>::iterator tareaElegida = lottery(systemSeed);
+			list<tarea>::iterator tareaElegida = lottery();
 			tareasEnEjecucion[cpu] = *tareaElegida;
 			tareaACorrer = tareaElegida->pid;
 			tareas.erase(tareaElegida);
@@ -98,6 +99,32 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 	return tareaACorrer;
 }
 
-list<tarea>::iterator SchedLottery::lottery(int semilla) {
-	return tareas.begin();
+list<tarea>::iterator SchedLottery::lottery() {
+	// COMPLETAAARR!!!
+	int sorteado = random_gen() % systemTickets;
+	int suma = 0;
+	
+	// Recorro la lista de tareas y devuelvo el iterador a la elegida.
+	list<tarea>::iterator it = tareas.begin();
+	while (suma < sorteado) {
+		suma += it->tickets;
+		if (suma > sorteado) break;
+		it++;
+	}
+	
+	return it;
+}
+
+unsigned int SchedLottery::random_gen() {
+	unsigned int hi, lo;
+	
+	lo = 16807 * (systemSeed & 0xFFFF);
+	hi = 16807 * (systemSeed >> 16);
+	
+	lo += (hi & 0x7FFF) << 16;
+	lo += hi >> 15;
+	
+	if (lo > 0x7FFFFFFF) lo -= 0x7FFFFFFF;
+	
+	return (systemSeed = lo);
 }
