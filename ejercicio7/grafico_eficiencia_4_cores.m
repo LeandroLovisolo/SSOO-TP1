@@ -1,3 +1,3 @@
 function grafico_eficiencia_4_cores()
 
-grafico_eficiencia(4, true);
+grafico_eficiencia(4);
