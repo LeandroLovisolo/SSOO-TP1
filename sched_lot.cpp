@@ -100,7 +100,6 @@ int SchedLottery::tick(int cpu, const enum Motivo m) {
 }
 
 list<tarea>::iterator SchedLottery::lottery() {
-	// COMPLETAAARR!!!
 	int sorteado = random_gen() % systemTickets;
 	int suma = 0;
 	
