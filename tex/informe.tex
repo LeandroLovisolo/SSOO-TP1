@@ -423,6 +423,7 @@ El lote se computa con una eficiencia de \textbf{0.54} ciclos útiles por cada c
 
 \section{Ejercicio 8}
 
+\subsection{Medición e hipótesis}
 Consideramos como unidad de medición los ticks realizados por los procesadores para un lote de tareas. Esta elección se debe a que, para nuestro criterio, un scheduler tiene una mejor pérformance (se desempeña mejor), si logra terminar el lote de tareas en menos tiempo (ticks) que otro.
 
 Analizando los dos algoritmos, deducimos dos hipótesis que muestran los beneficios y los contra que poseen ambos algoritmos.
@@ -431,9 +432,9 @@ La primera hipótesis es que, el algoritmo de SchedRR presentaría tiempos sin u
 
 Como segunda hipótesis, teniendo una penalidad baja para migrar tareas de un core a otro,  el algoritmo SchedRR se comportaría mejor que SchedRR2 debido a que al algoritmo SchedRR2 no le es posible migrar procesos, interrumpiendo en alguna medida el paralelismo otorgado por tener múltiples cores.
 
-Realizamos una serie de tests para verificar esta diferencia.
+\subsection{Experimentos}
 
-Para realizar la comparación, se consiguieron 400 tiempos promedios de ejecución. Estos tiempos promedios se calcularon como la suma de la cantidad de ticks utilizados de 50 lotes de tareas dividido 50. Se utilizaron 2 cores de quantum 100 en ambos y 4 tareas \textit{RandomTask} las cuales tienen bloqueos y consumos de CPU aleatorios (utilizando una seed para realizar el mismo experimento en ambos schedulers) en duración y en cantidad. En cada uno de los 400 promedios, se incrementó en ambos la penalidad de core switch.
+Para realizar el experimento del mal funcionamiento del SchedRR utilizando alta penalidad, se consiguieron 400 tiempos promedios de ejecución. Estos tiempos promedios se calcularon como la suma de la cantidad de ticks utilizados de 50 lotes de tareas dividido 50. Se utilizaron 2 cores de quantum 100 en ambos y 4 tareas \textit{RandomTask} las cuales tienen bloqueos y consumos de CPU aleatorios (utilizando una seed para realizar el mismo experimento en ambos schedulers) en duración y en cantidad. En cada uno de los 400 promedios, se incrementó en ambos la penalidad de core switch.
 
 \begin{figure}[ht!]
 \centering
@@ -444,7 +445,17 @@ Para realizar la comparación, se consiguieron 400 tiempos promedios de ejecuci�
 
 Como puede observarse en la figura 7, a partir de una penalidad de 50, el SchedRR empieza a necesitar más ticks para completar las tareas que el SchedRR2, haciendo del SchedRR2 una mejor opción para el caso de penalidades altas. Sin embargo, de 50 ticks para abajo, el SchedRR realiza un mejor trabajo, terminando la ejecución del lote de tareas más rápido que el SchedRR2.
 
-En igualdad de condiciones, realizando otra vez un test aleatorio, esta vez sin incrementar el costo de migración y realizando un promedio de tiempo total, obtenemos la figura 8.
+En igualdad de condiciones, realizando otra vez un test aleatorio, de iguales condiciones que el experimento anterior, esta vez sin incrementar el costo de migración, se obtiene la figura 11. Esta figura, muestra de a pares (ticks necesarios utilizando ScheddRR y ticks necesarios con SchedRR2), un subconjunto del experimento realizado en el cual se puede ver que en la mayoría de los casos, SchedRR2 supera al SchedRR en ticks para completar el lote de tareas.
+
+Para una mejor apreciación global, se presenta la siguiente tabla: \\
+\\
+\begin{tabular}{| l | c |}
+  \hline                        
+  Experimentos donde SchedRR tarda hasta $10\%$ menos ticks que SchedRR2 & 341 \\
+  Experimentos donde SchedRR tarda más de $10\%$ menos ticks que SchedRR2 & 3 \\
+  Experimentos donde SchedRR2 tarda hasta $10\%$ menos que SchedRR2 & 56 \\
+  \hline  
+\end{tabular}
 
 \begin{figure}[ht!]
 \centering
