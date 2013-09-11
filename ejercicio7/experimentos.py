@@ -20,13 +20,13 @@ def experimento(cores, quantums):
 	system("../simusched tareas.tsk %d 1 2 SchedRR %d %s > resultados/%s.log" % \
 		(cores, cores, " ".join(quantums), filename))
 
-	# Genero los diagramas Gantt de la simulación
-	system("cat resultados/%s.log | ../graphsched.py > resultados/%s-simulacion.png" % \
-		(filename, filename))
+	# # Genero los diagramas Gantt de la simulación
+	# system("cat resultados/%s.log | ../graphsched.py > resultados/%s-simulacion.png" % \
+	# 	(filename, filename))
 
-	# Genero los diagramas Gantt del uso de cores
-	system("cat resultados/%s.log | ../graph_cores.py" % filename)
-	system("mv out_cores_timeline.png resultados/%s-cores.png" % filename)
+	# # Genero los diagramas Gantt del uso de cores
+	# system("cat resultados/%s.log | ../graph_cores.py" % filename)
+	# system("mv out_cores_timeline.png resultados/%s-cores.png" % filename)
 
 def main():
 	# Recorro todas las combinaciones posibles de cores y quantums, sin repetidos.

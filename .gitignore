@@ -5,7 +5,3 @@ simusched
 # Sublime Text
 *.sublime-project
 *.sublime-workspace
-
-# Ejercicio 7: Resultados de los experimentos
-ejercicio7/resultados/*.log
-ejercicio7/resultados/*.png
