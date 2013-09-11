@@ -5,7 +5,7 @@ A = [];
 files = glob(strcat('resultados/experimento-', num2str(cores), '*.log'));
 for i = 1:length(files)
 	% Leo el log del experimento y obtengo el runtime
-	data = readlogfile(files{i});
+	data = leer_log(files{i});
 	rt = runtime(data);
 
 	% Leo los enteros en el nombre de archivo (ej.: experimento-1-2-3.log => [1 2 3])
@@ -18,23 +18,7 @@ for i = 1:length(files)
 	end
 	res(end + 1) = rt;
  	A = [A; res];
-
-	% % Imprimo el resultado por pantalla
-	% printf('%d %s\n', rt, files{i});
-	% fflush(stdout); 	
 end
-
-
-function A = readlogfile(filename)
-
-A = {};
-fid = fopen(filename, 'r');
-while true
-	line = fgetl(fid);
-	if line == -1; break; end;
-	A{end + 1} = cellstr(strsplit(line, ' '));
-end
-fclose(fid);
 
 
 function t = runtime(data)

@@ -323,7 +323,7 @@ Sobre el cual estudiamos las métricas a continuación:
 	Cantidad de ticks necesarios para completar todo el lote de tareas. Es el tiempo total que percibe el usuario desde que inicia el procesamiento de su lote de tareas hasta que éste termina.
 
 	\item[Eficiencia]
-	Porcentaje del tiempo que el procesador está computando algo útil. Por algo útil se entiende un cómputo que forma parte de alguna de las tareas del lote, en lugar de uno que forma parte del scheduling; como por ejemplo cambios de contexto, migraciones entre núcleos y tiempo idle.
+	Relación entre los ciclos destinados a cómputos útiles y los ciclos totales utilizados hasta terminar de ejecutar el lote de tareas. Por cómputo útil se entiende un cómputo que forma parte de alguna de las tareas del lote, en lugar de uno que forma parte del scheduling (cambios de contexto, migraciones entre cores y tiempo idle).
 \end{description}
 
 
@@ -377,6 +377,43 @@ Ilustramos a continuación los tiempos de ejecución mínimos y máximos medidos
 	\include{ej7-grafico-runtime-4-cores}
 	\caption{Tiempos de ejecución mínimos y máximos en 4 cores}
 \end{figure}
+
+
+\subsection{Eficiencia}
+
+\subsubsection{1 core}
+
+El lote se computa con una eficiencia de \textbf{0.54} ciclos útiles por cada ciclo utilizado, para todo el rango de quantums estudiando.
+
+
+\subsubsection{2 cores}
+
+\begin{figure}[H]
+	\centering
+	\include{ej7-grafico-eficiencia-2-cores}
+	\caption{Tiempos de ejecución mínimos y máximos en 2 cores}
+\end{figure}
+
+
+\subsubsection{3 cores}
+
+\begin{figure}[H]
+	\centering
+	\include{ej7-grafico-eficiencia-3-cores}
+	\caption{Tiempos de ejecución mínimos y máximos en 3 cores}
+\end{figure}
+
+
+\subsubsection{4 cores}
+
+\begin{figure}[H]
+	\centering
+	\include{ej7-grafico-eficiencia-4-cores}
+	\caption{Tiempos de ejecución mínimos y máximos en 4 cores}
+\end{figure}
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
