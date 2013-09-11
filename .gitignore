@@ -2,6 +2,13 @@
 *.o
 simusched
 
+# LaTeX
+informe.pdf
+tex/*.pdf
+tex/*.aux
+tex/*.toc
+tex/*.log
+
 # Sublime Text
 *.sublime-project
 *.sublime-workspace
