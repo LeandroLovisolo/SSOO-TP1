@@ -342,7 +342,7 @@ Presentamos los resultados a continuación.
 El lote demora \textbf{65 ticks} en terminar para todos los valores de quantum en el rango estudiado.
 
 
-\subsection{2 cores}
+\subsubsection{2 cores}
 
 El gráfico a continuación muestra el tiempo de ejecución del lote para los pares de quantums en los rangos $(1, 1 \ldots 8)$, $(2, 2 \ldots 8)$, $\ldots,$ $(8, 8)$. Los presentamos agrupados de esta manera porque para cada par dentro de un mismo rango se mide el mismo tiempo de ejecución en nuestros experimentos.
 
@@ -353,7 +353,7 @@ El gráfico a continuación muestra el tiempo de ejecución del lote para los pa
 \end{figure}
 
 
-\subsection{3 cores}
+\subsubsection{3 cores}
 
 En este caso los quantums utilizados se generaron siguiendo la secuencia $(1, 1, 1 \ldots 8)$, $(1, 2, 2 \ldots 8)$, $\ldots ,$ $(1, 8, 8)$, $(2, 2, 2 \ldots 8)$, $(2, 3, 3 \ldots 8)$, $\ldots ,$ $(8, 8, 8)$. De esta forma recorremos todas las configuraciones posibles de quantums, sin evaluar combinaciones equivalentes más de una vez. \footnote{Por ejemplo, la secuencia incluye la tripla $(1, 2, 3)$ pero no incluye $(2, 1, 3)$, pues estaríamos realizando dos experimentos con la misma elección de quantums pero asignados a cores distintos.}
 
