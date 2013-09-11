@@ -329,7 +329,7 @@ Sobre el cual estudiamos las métricas a continuación:
 
 \subsection{Experimentos}
 
-Realizamos 4 conjuntos de experimentos: con 1, 2, 3 y 4 cores. Para cada conjunto de experimentos evaluamos todas las combinaciones de quantums posibles por core en el rango $1, \ldots, 8$.
+Realizamos 4 conjuntos de experimentos: simulando 1, 2, 3 y 4 cores. Para cada conjunto de experimentos evaluamos todas las combinaciones de quantums posibles por core en el rango $1, \ldots, 8$.
 
 Presentamos los resultados a continuación.
 
@@ -359,13 +359,24 @@ En este caso los quantums utilizados se generaron siguiendo la secuencia $(1, 1,
 
 El gráfico a continuación muestra los tiempos de ejecución mínimos y máximos medidos para cada rango de configuraciones $(1, *, *)$, $(2, *, *)$, $\ldots ,$ $(8, *, *)$, respetando las restricciones impuestas por la secuencia anterior.
 
-
 \begin{figure}[H]
 	\centering
 	\include{ej7-grafico-runtime-3-cores}
 	\caption{Tiempos de ejecución mínimos y máximos en 3 cores}
 \end{figure}
 
+
+\subsubsection{4 cores}
+
+De manera similar al caso anterior, generamos los quantums siguiendo la secuencia $(1, 1, 1, 1 \ldots 8)$, $(1, 1, 2, 2 \ldots 8)$, $\ldots ,$ $(1, 8, 8, 8)$, $(2, 2, 2, 2 \ldots 8)$, $(2, 3, 3, 3 \ldots 8)$, $\ldots ,$ $(8, 8, 8, 8)$, de manera tal de no evaluar combinaciones equivalentes más de una vez.
+
+Ilustramos a continuación los tiempos de ejecución mínimos y máximos medidos para cada rango de configuraciones $(1, *, *, *)$, $(2, *, *, *)$, $\ldots ,$ $(8, *, *, *)$, respetando las restricciones correspondientes.
+
+\begin{figure}[H]
+	\centering
+	\include{ej7-grafico-runtime-4-cores}
+	\caption{Tiempos de ejecución mínimos y máximos en 4 cores}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
