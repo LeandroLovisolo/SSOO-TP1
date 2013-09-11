@@ -1,4 +1,4 @@
-function grafico_eficiencia(cores, comparar_min_y_max)
+function grafico_eficiencia(cores)
 
 % Obtengo matriz de eficiencias
 E = eficiencias(cores);
@@ -25,15 +25,11 @@ end
 figure;
 hold on;
 
-if(comparar_min_y_max)
-	plot(Ymin);
-	plot(Ymax, 'color', 'red');
+plot(Ymin);
+plot(Ymax, 'color', 'red');
 
-	legend({'M\''inimo', 'M\''aximo'});
-	legend('boxon');
-else
-	plot(Ymax);	
-end
+legend({'M\''inimo', 'M\''aximo'});
+legend('boxon');
 
 xlabel('Quantums por core');
 ylabel('Eficiencia (ciclos \''utiles / ciclos totales)');
@@ -41,11 +37,12 @@ ylabel('Eficiencia (ciclos \''utiles / ciclos totales)');
 set(gca, 'xtick', 1:8);
 set(gca, 'xticklabel', X);
 
-ylim([0, 1]);
-
 hold off;
 
 oldpwd = pwd();
 cd('../tex');
-print(strcat('ej7-grafico-eficiencia-', num2str(cores), '-cores'), '-S950,450', '-dtex');
+archivo = strcat('ej7-grafico-eficiencia-',
+	             num2str(cores),
+	             ifelse(cores == 1,  '-core', '-cores'));
+print(archivo, '-S950,450', '-dtex');
 cd(oldpwd);
