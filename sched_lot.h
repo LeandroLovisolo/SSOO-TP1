@@ -20,13 +20,14 @@ class SchedLottery : public SchedBase {
 		virtual int tick(int cpu, const enum Motivo m);
 	
 	private:
-		std::list<tarea>::iterator lottery(int semilla);
+		std::list<tarea>::iterator lottery();
+		unsigned int random_gen();
 		
 		std::list<tarea> tareas;
 		std::map<int, int> tareasBloqueadas;
 		std::vector<tarea> tareasEnEjecucion;
 		std::vector<int> quantumRestanteCore;
-		int sysQuantum;
+		std::vector<int> sysQuantumCore;
 		int systemTickets;
 		int systemSeed;
 };
