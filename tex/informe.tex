@@ -310,9 +310,9 @@ Pendiente.
 Diseñamos el siguiente lote de tareas:
 
 \begin{verbatim}
-TaskBatch 8 1
-TaskBatch 8 2
-TaskBatch 8 4
+*8 TaskBatch 8 1
+*4 TaskBatch 8 2
+*2 TaskBatch 8 4
 TaskBatch 8 8
 \end{verbatim}
 
@@ -329,9 +329,35 @@ Sobre el cual estudiamos las métricas a continuación:
 
 \subsection{Experimentos}
 
-Realizamos 4 conjuntos de experimentos: simulando 1, 2, 3 y 4 cores. Para cada conjunto de experimentos evaluamos todas las combinaciones de quantums posibles por core en el rango $1, \ldots, 8$.
+Realizamos 4 experimentos para cada métrica: simulando 1, 2, 3 y 4 cores. Para cada experimento realizamos una simulación por cada una de las combinaciones de quantums posibles por core en el rango $1, \ldots, 8$.
 
-Presentamos los resultados a continuación.
+Para los casos con 2 o más cores, recorremos el rango de quantums sin evaluar dos combinaciones equivalentes. \footnote{Por ejemplo, para el caso de 2 cores: las combinaciones de quantums $(5, 10)$ y $(10, 5)$ son equivalentes.} Esto lo logramos siguiendo las secuencias a continuación:
+
+\begin{itemize}
+	\item{
+		Para 2 cores:
+		$(1, 1), \ldots, (1, 8),
+		 (2, 2), \ldots, (2, 8),
+		 (3, 3), \ldots, (8, 8)$.
+	}
+	\item{
+		Para 3 cores:
+		$(1, 1, 1), \ldots, (1, 1, 8),
+		 (1, 2, 2), \ldots, (1, 2, 8),
+		 (1, 3, 3), \ldots, (8, 8, 8)$.
+	}	
+	\item{
+		Para 4 cores:
+		$(1, 1, 1, 1), \ldots, (1, 1, 1, 8),
+		 (1, 1, 2, 2), \ldots, (1, 1, 8, 8),
+		 (1, 2, 2, 2), \ldots, (1, 8, 8, 8)$, \\
+		\hspace*{5.7em}
+		$(2, 2, 2, 2), \ldots, (2, 8, 8, 8),
+		 (3, 3, 3, 3), \ldots, (8, 8, 8, 8)$.
+	}
+\end{itemize}
+
+En los resultados a continuación mostramos los valores mínimos y máximos observados para cada métrica.
 
 
 \subsection{Tiempo de ejecución}
@@ -339,12 +365,14 @@ Presentamos los resultados a continuación.
 
 \subsubsection{1 core}
 
-El lote demora \textbf{65 ticks} en terminar para todos los valores de quantum en el rango estudiado.
+\begin{figure}[H]
+	\centering
+	\include{ej7-grafico-runtime-1-core}
+	\caption{Tiempo de ejecución en 1 core}
+\end{figure}
 
 
 \subsubsection{2 cores}
-
-El gráfico a continuación muestra el tiempo de ejecución del lote para los pares de quantums en los rangos $(1, 1 \ldots 8)$, $(2, 2 \ldots 8)$, $\ldots,$ $(8, 8)$. Los presentamos agrupados de esta manera porque para cada par dentro de un mismo rango se mide el mismo tiempo de ejecución en nuestros experimentos.
 
 \begin{figure}[H]
 	\centering
@@ -355,10 +383,6 @@ El gráfico a continuación muestra el tiempo de ejecución del lote para los pa
 
 \subsubsection{3 cores}
 
-En este caso los quantums utilizados se generaron siguiendo la secuencia $(1, 1, 1 \ldots 8)$, $(1, 2, 2 \ldots 8)$, $\ldots ,$ $(1, 8, 8)$, $(2, 2, 2 \ldots 8)$, $(2, 3, 3 \ldots 8)$, $\ldots ,$ $(8, 8, 8)$. De esta forma recorremos todas las configuraciones posibles de quantums, sin evaluar combinaciones equivalentes más de una vez. \footnote{Por ejemplo, la secuencia incluye la tripla $(1, 2, 3)$ pero no incluye $(2, 1, 3)$, pues estaríamos realizando dos experimentos con la misma elección de quantums pero asignados a cores distintos.}
-
-El gráfico a continuación muestra los tiempos de ejecución mínimos y máximos medidos para cada rango de configuraciones $(1, *, *)$, $(2, *, *)$, $\ldots ,$ $(8, *, *)$, respetando las restricciones impuestas por la secuencia anterior.
-
 \begin{figure}[H]
 	\centering
 	\include{ej7-grafico-runtime-3-cores}
@@ -367,10 +391,6 @@ El gráfico a continuación muestra los tiempos de ejecución mínimos y máximo
 
 
 \subsubsection{4 cores}
-
-De manera similar al caso anterior, generamos los quantums siguiendo la secuencia $(1, 1, 1, 1 \ldots 8)$, $(1, 1, 2, 2 \ldots 8)$, $\ldots ,$ $(1, 8, 8, 8)$, $(2, 2, 2, 2 \ldots 8)$, $(2, 3, 3, 3 \ldots 8)$, $\ldots ,$ $(8, 8, 8, 8)$, de manera tal de no evaluar combinaciones equivalentes más de una vez.
-
-Ilustramos a continuación los tiempos de ejecución mínimos y máximos medidos para cada rango de configuraciones $(1, *, *, *)$, $(2, *, *, *)$, $\ldots ,$ $(8, *, *, *)$, respetando las restricciones correspondientes.
 
 \begin{figure}[H]
 	\centering
@@ -381,9 +401,14 @@ Ilustramos a continuación los tiempos de ejecución mínimos y máximos medidos
 
 \subsection{Eficiencia}
 
+
 \subsubsection{1 core}
 
-El lote se computa con una eficiencia de \textbf{0.54} ciclos útiles por cada ciclo utilizado, para todo el rango de quantums estudiando.
+\begin{figure}[H]
+	\centering
+	\include{ej7-grafico-eficiencia-1-core}
+	\caption{Tiempos de ejecución mínimos y máximos en 1 core}
+\end{figure}
 
 
 \subsubsection{2 cores}
@@ -413,7 +438,31 @@ El lote se computa con una eficiencia de \textbf{0.54} ciclos útiles por cada c
 \end{figure}
 
 
+\subsection{Resultados}
 
+Los resultados a continuación son las configuraciones óptimas de quantums por cantidad de cores para cada métrica. Estas configuraciones óptimas no siempre son únicas. En caso de haber más de una, se muestra la que primero se alcanza realizando los experimentos en la secuencia descrita en la sección anterior.
+
+Recordar que estas configuraciones son óptimas \textbf{sólo para el lote de tareas estudiado}. Para lotes distintos estos valores podrían ser subóptimos.
+
+
+\subsubsection{Tiempo de ejecución}
+
+\begin{description}
+	\item[1 core:] $1$.             Tiempo demorado: 224 ticks.
+	\item[2 cores:] $(7, 7)$.       Tiempo demorado: 126 ticks.
+	\item[3 cores:] $(3, 7, 7)$.    Tiempo demorado: 91 ticks.
+	\item[4 cores:] $(7, 8, 8, 8)$. Tiempo demorado: 70 ticks.
+\end{description}
+
+
+\subsubsection{Eficiencia}
+
+\begin{description}
+	\item[1 core:] $1$.             Eficiencia alcanzada: 60\%.
+	\item[2 cores:] $(7, 7)$.       Eficiencia alcanzada: 53.15\%.
+	\item[3 cores:] $(4, 8, 8)$.    Eficiencia alcanzada: 49.45\%.
+	\item[4 cores:] $(7, 8, 8, 8)$. Eficiencia alcanzada: 47.53\%.
+\end{description}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
