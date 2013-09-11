@@ -307,7 +307,65 @@ Pendiente.
 
 \section{Ejercicio 7}
 
-Pendiente.
+Diseñamos el siguiente lote de tareas:
+
+\begin{verbatim}
+TaskBatch 8 1
+TaskBatch 8 2
+TaskBatch 8 4
+TaskBatch 8 8
+\end{verbatim}
+
+Sobre el cual estudiamos las métricas a continuación:
+
+\begin{description}
+	\item[Tiempo de ejecución]
+	Cantidad de ticks necesarios para completar todo el lote de tareas. Es el tiempo total que percibe el usuario desde que inicia el procesamiento de su lote de tareas hasta que éste termina.
+
+	\item[Eficiencia]
+	Porcentaje del tiempo que el procesador está computando algo útil. Por algo útil se entiende un cómputo que forma parte de alguna de las tareas del lote, en lugar de uno que forma parte del scheduling; como por ejemplo cambios de contexto, migraciones entre núcleos y tiempo idle.
+\end{description}
+
+
+\subsection{Experimentos}
+
+Realizamos 4 conjuntos de experimentos: con 1, 2, 3 y 4 cores. Para cada conjunto de experimentos evaluamos todas las combinaciones de quantums posibles por core en el rango $1, \ldots, 8$.
+
+Presentamos los resultados a continuación.
+
+
+\subsection{Tiempo de ejecución}
+
+
+\subsubsection{1 core}
+
+El lote demora \textbf{65 ticks} en terminar para todos los valores de quantum en el rango estudiado.
+
+
+\subsection{2 cores}
+
+El gráfico a continuación muestra el tiempo de ejecución del lote para los pares de quantums en los rangos $(1, 1 \ldots 8)$, $(2, 2 \ldots 8)$, $\ldots,$ $(8, 8)$. Los presentamos agrupados de esta manera porque para cada par dentro de un mismo rango se mide el mismo tiempo de ejecución en nuestros experimentos.
+
+\begin{figure}[H]
+	\centering
+	\include{ej7-grafico-runtime-2-cores}
+	\caption{Tiempo de ejecución en 2 cores}
+\end{figure}
+
+
+\subsection{3 cores}
+
+En este caso los quantums utilizados se generaron siguiendo la secuencia $(1, 1, 1 \ldots 8)$, $(1, 2, 2 \ldots 8)$, $\ldots ,$ $(1, 8, 8)$, $(2, 2, 2 \ldots 8)$, $(2, 3, 3 \ldots 8)$, $\ldots ,$ $(8, 8, 8)$. De esta forma recorremos todas las configuraciones posibles de quantums, sin evaluar combinaciones equivalentes más de una vez. \footnote{Por ejemplo, la secuencia incluye la tripla $(1, 2, 3)$ pero no incluye $(2, 1, 3)$, pues estaríamos realizando dos experimentos con la misma elección de quantums pero asignados a cores distintos.}
+
+El gráfico a continuación muestra los tiempos de ejecución mínimos y máximos medidos para cada rango de configuraciones $(1, *, *)$, $(2, *, *)$, $\ldots ,$ $(8, *, *)$, respetando las restricciones impuestas por la secuencia anterior.
+
+
+\begin{figure}[H]
+	\centering
+	\include{ej7-grafico-runtime-3-cores}
+	\caption{Tiempos de ejecución mínimos y máximos en 3 cores}
+\end{figure}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
