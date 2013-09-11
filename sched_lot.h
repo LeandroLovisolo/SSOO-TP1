@@ -2,19 +2,33 @@
 #define __SCHED_LOT__
 
 #include <vector>
-#include <queue>
+#include <map>
+#include <list>
 #include "basesched.h"
 
-class SchedLot : public SchedBase {
+struct tarea {
+			int pid;
+			int tickets;
+		};
+
+class SchedLottery : public SchedBase {
 	public:
-		SchedLot(std::vector<int> argn);
-        ~SchedLot();
+		SchedLottery(std::vector<int> argn);
+        ~SchedLottery();
 		virtual void load(int pid);
 		virtual void unblock(int pid);
 		virtual int tick(int cpu, const enum Motivo m);
 	
 	private:
-
+		std::list<tarea>::iterator lottery(int semilla);
+		
+		std::list<tarea> tareas;
+		std::map<int, int> tareasBloqueadas;
+		std::vector<tarea> tareasEnEjecucion;
+		std::vector<int> quantumRestanteCore;
+		int sysQuantum;
+		int systemTickets;
+		int systemSeed;
 };
 
 #endif

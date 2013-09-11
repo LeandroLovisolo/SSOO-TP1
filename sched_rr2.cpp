@@ -74,6 +74,7 @@ int SchedRR2::tick(int cpu, const enum Motivo m) {
 		}
 		else if(current_pid(cpu) == IDLE_TASK && !colasTareasPorCore[cpu].empty()) {
 			tareaACorrer = colasTareasPorCore[cpu].front();
+			quantumRestanteCore[cpu] = quantumCore[cpu];
 		}
 		else {
 			quantumRestanteCore[cpu]--;
