@@ -540,7 +540,39 @@ Puede notarse la diferencia mencionada en la figura 9 y la figura 10. En la figu
 
 \section{Ejercicio 9}
 
-Pendiente.
+Para evaluar la ecuanimidad del \textit{lottery scheduler}, planteamos la siguiente hipótesis:
+
+``Sea un lote de $k$ tareas idénticas que comienzan en el primer tick, sobre el que se realizan $n$ simulaciones idénticas,\footnote{Utilizando este scheduler con distintas semillas y fijando el resto de los parámetros.} de las cuales se observan los primeros $t$ ticks. Entonces los promedios $p_1, \ldots, p_k$ de ciclos de CPU ejecutados por cada tarea hasta el tick $t$ convergerán a alguna cantidad $p$, a medida que $n$ crece.''
+
+Es decir, $\lim \limits_{n \to \infty} p_i \to p$, para todo $i$ entre $1$ y $k$.
+
+Si el scheduler es justo, entonces tiene sentido esperar que cada tarea reciba aproximadamente la misma cantidad de recursos luego de un número suficientemente grande de simulaciones. 
+
+Para poner a prueba nuestra hipótesis diseñamos el siguiente lote de tareas:
+
+\begin{verbatim}
+*4 TaskCPU 100
+\end{verbatim}
+
+Luego llevamos a cabo una serie de 1000 simulaciones con los siguientes parámetros: 1 core, costo de cambio de contexto 0, quantum de 5 ticks de duración, y una semilla de secuencia pseudoaleatoria distinta para cada simulación.
+
+En cada simulación observamos \textbf{los primeros 100 ticks} ejecutados por el simulador y extraímos la cantidad de ciclos de CPU utilizados por cada tarea.
+
+El siguiente gráfico muestra el promedio de ciclos por tarea en función del número de simulación.
+
+\begin{figure}[H]
+	\centering
+	\include{ej9-grafico-ecuanimidad}
+	\caption{Ecuanimidad del \textit{lottery scheduler}}
+\end{figure}
+
+En el gráfico se puede ver cómo los promedios por tarea tienden a un mismo valor a medida que $n$ crece. \textbf{Esto verifica nuestra hipótesis}.
+
+En particular, los promedios por tarea convergen a 25 ciclos por simulación. Esto tiene sentido, pues estamos ejecutando 4 tareas que nunca bloquean, sin costo de cambio de contexto, y como estamos observando los primeros 100 ticks simulados, el promedio esperado es de $\frac{100}{4} = 25$ ciclos por tarea.
+
+La elección de los parámetros del experimento fue arbitraria. El número de ticks observado y la duración del quantum utilizado nos permitieron alcanzar la convergencia en una cantidad de tiempo razonable. Pueden obtenerse resultados similares con otro conjunto de parámetros luego de un número suficiente de simulaciones.
+
+Notar que el número de ticks observado debe ser menor que la duración total de cada simulación, ya que de lo contrario el número de ciclos de CPU utilizados por cada tarea hasta ese tick será siempre el mismo (la duración de la tarea), y esto no es útil para medir la ecuanimidad del scheduler.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
