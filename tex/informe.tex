@@ -142,27 +142,6 @@ Lautaro José Petaccio & 443/11 & lausuper@gmail.com\\
 
 \newpage
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Introducción                                                              %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\section{Introducción}
-
-Pendiente.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Ejercicio 1                                                               %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\section{Ejercicio 1}
-
-Pendiente.
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Ejercicio 2                                                               %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -207,16 +186,6 @@ Puede observarse como en la figura \ref{FCFS2Core}, relacionada a la ejecución 
 \end{figure}
 
 Observando la figura \ref{FCFS3Core}, puede notarse como cáda core toma cada una de las 3 tareas y las ejecuta simultáneamente hasta su finalización.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Ejercicio 3                                                               %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\section{Ejercicio 3}
-
-Pendiente.
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Ejercicio 4                                                               %%
@@ -279,25 +248,6 @@ Por último, para demostrar la correctitud de la implementación del scheduler R
 \caption{Scheduler RR corriendo el lote de tareas con 2 core de 100 de quantum cada uno, 50 de penalidad por task switch y una tarea bloqueante}
 \label{SchedRR2CoreIO}
 \end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Ejercicio 5                                                               %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\section{Ejercicio 5}
-
-Pendiente.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Ejercicio 6                                                               %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\section{Ejercicio 6}
-
-Pendiente.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -569,35 +519,45 @@ Notar que el número de ticks observado debe ser menor que la duración total de
 %% Ejercicio 10                                                              %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 \section{Ejercicio 10}
 
-Pendiente.
+Para evaluar la necesidad de la aplicación del los \textit{compensation tickets} en el algoritmo de scheduling \textit{Lottery} se utilizó el siguiente lote de tareas:
+\begin{verbatim}
+@0:
+TaskBatch 100 10
+*3 TaskCPU 100
+\end{verbatim}
+El lote contiene tres tareas que utilizan la CPU (100 ticks) como su único recurso utilizado y una tarea que realiza 10 entradas/salidas y tiene una utilización de CPU de 100 ticks. La elección de este lote tiene como función demostrar como al no utilizar \textit{compensation tickets} y al tener al menos una tarea que se bloquee, el scheduler deja de ser equitativo en la selección de tareas.
+
+A continuación, ejemplos de la ejecución del lote con y sin compensación:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=175mm]{../ejercicio10/GraphSchedLotNC.png}
+\caption{Ejecución de lote de tareas utilizando Lottery sin compensación}
+\label{GraphSchedLotNC}
+\end{figure}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Conclusiones                                                              %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[H]
+\centering
+\includegraphics[width=175mm]{../ejercicio10/GraphSchedLot.png}
+\caption{Ejecución de lote de tareas utilizando Lottery con compensación}
+\label{GraphSchedLot}
+\end{figure}
 
+Puede notarse como la ejecución del lote de tareas sin compensación produce que la tarea bloqueante (0) al bloquearse por un solo tick, pierda totalmente el quantum restante y no pueda realizar el uso del CPU necesario equitativamente en comparación a las otras tareas, lo que culmina en la tarea 0 ejecutándose casi por complejo una vez terminadas las tareas restantes.
 
-\section{Conclusiones}
+Por otro lado, en la ejecución del lote de tareas con compensación, puede notarse como el scheduler asigna la tarea 0 para su ejecución más veces que las demás, haciendo que el uso del CPU para las tareas sea equitativo independientemente de los bloqueos que esta produzca.
 
-Pendiente.
+Para una mejor comparación, realizamos el gráfico de la prueba de ecuanimidad realizado en el ejercicio 9.
 
+\begin{figure}[H]
+	\centering
+	\include{ej10-grafico-ecuanimidad}
+	\caption{Pérdida de ecuanimidad al no utilizar compensation tickets}
+\end{figure}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Apéndice                                                                  %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newpage
-
-\begin{appendices}
-
-\section{Apéndice}
-
-Pendiente.
-
-
-\end{appendices}
+La tarea bloqueante mantiene un promedio inferior de ciclos de ejecución en comparación a las demás tareas no bloqueantes en el lote.
 
 \end{document}
