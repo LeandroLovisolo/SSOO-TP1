@@ -14,6 +14,7 @@
 #include "sched_rr.h"
 #include "sched_rr2.h"
 #include "sched_lot.h"
+#include "sched_lot_nc.h"
 
 using namespace std;
 
@@ -184,6 +185,7 @@ SchedBase* sched_create(const char* sched, vector<int> argn) {
 	_sched_create(SchedRR2, -1)
 	_sched_create(SchedFCFS, -1)
 	_sched_create(SchedLottery, -1)
+	_sched_create(SchedLotteryNC, -1)
 	return NULL;
 }
 
