@@ -427,15 +427,19 @@ Consideramos como unidad de medición los ticks realizados por los procesadores 
 
 Analizando los dos algoritmos, deducimos dos hipótesis que muestran los beneficios y los contra que poseen ambos algoritmos.
 
-La primera hipótesis es que, el algoritmo de SchedRR presentaría tiempos sin uso del procesador debido a la penalidad de cambio de nucleos, mientras que el algoritmo de SchedRR2 no los tendría debido a que este no lo permite, haciendo que necesite más ticks para completar el lote de tareas.
+Las hipótesis son las siguientes:
+\begin{enumerate}
+\item El algoritmo de SchedRR presentaría tiempos sin uso del procesador debido a la penalidad de cambio de nucleos, mientras que el algoritmo de SchedRR2 no los tendría debido a que este no lo permite, haciendo que necesite más ticks para completar el lote de tareas.
 
-Como segunda hipótesis, teniendo una penalidad baja para migrar tareas de un core a otro,  el algoritmo SchedRR se comportaría mejor que SchedRR2 debido a que al algoritmo SchedRR2 no le es posible migrar procesos, interrumpiendo en alguna medida el paralelismo otorgado por tener múltiples cores.
+\item Teniendo una penalidad baja para migrar tareas de un core a otro,  el algoritmo SchedRR se comportaría mejor que SchedRR2 debido a que al algoritmo SchedRR2 no le es posible migrar procesos, interrumpiendo en alguna medida el paralelismo otorgado por tener múltiples cores.
+\end{enumerate}
 
 \subsection{Experimentos}
+\subsubsection{Hipótesis 1}
 
 Para realizar el experimento del mal funcionamiento del SchedRR utilizando alta penalidad, se consiguieron 400 tiempos promedios de ejecución. Estos tiempos promedios se calcularon como la suma de la cantidad de ticks utilizados de 50 lotes de tareas dividido 50. Se utilizaron 2 cores de quantum 100 en ambos y 4 tareas \textit{RandomTask} las cuales tienen bloqueos y consumos de CPU aleatorios (utilizando una seed para realizar el mismo experimento en ambos schedulers) en duración y en cantidad. En cada uno de los 400 promedios, se incrementó en ambos la penalidad de core switch.
 
-\begin{figure}[ht!]
+\begin{figure}[H]
 \centering
 \includegraphics[width=175mm]{../ejercicio8/compTicksSched.png}
 \caption{Comparación de ticks necesarios para ambos schedulers}
@@ -444,12 +448,16 @@ Para realizar el experimento del mal funcionamiento del SchedRR utilizando alta 
 
 Como puede observarse en la figura \ref{compTicksSched}, a partir de una penalidad de 50, el SchedRR empieza a necesitar más ticks para completar las tareas que el SchedRR2, haciendo del SchedRR2 una mejor opción para el caso de penalidades altas. Sin embargo, de 50 ticks para abajo, el SchedRR realiza un mejor trabajo, terminando la ejecución del lote de tareas más rápido que el SchedRR2.
 
-En igualdad de condiciones, realizando otra vez un test aleatorio, de iguales condiciones que el experimento anterior, esta vez sin incrementar el costo de migración, se obtiene la figura \ref{RRvsRR2}. Esta figura, muestra, en 400 pruebas realizadas, cuántas veces un scheduler utiliza menos ticks para terminar su ejecución a comparación del otro.
+\subsubsection{Hipótesis 2}
 
-\begin{figure}[ht!]
+Realizamos un test de entradas aleatorias en iguales condiciones que el experimento anterior, esta vez sin incrementar el costo de migración, obteniendo la figura \ref{RRvsRR2}
+
+Esta figura, muestra, en 400 pruebas realizadas, con penalidad baja de intercambio de core (10) cuántas veces un scheduler utiliza menos ticks para terminar su ejecución a comparación del otro.
+
+\begin{figure}[H]
 \centering
-\includegraphics[width=160mm]{../ejercicio8/RRvsRR2.png}
-\caption{Comparación de efectividad de schedulers}
+\includegraphics[width=150mm]{../ejercicio8/RRvsRR2.png}
+\caption{Comparación de efectividad de schedulers con penalidad de intercambio de core baja (10)}
 \label{RRvsRR2}
 \end{figure}
 
@@ -555,9 +563,17 @@ Para una mejor comparación, realizamos el gráfico de la prueba de ecuanimidad 
 \begin{figure}[H]
 	\centering
 	\include{ej10-grafico-ecuanimidad}
-	\caption{Pérdida de ecuanimidad al no utilizar compensation tickets}
+	\caption{Test de ecuanimidad sin utilizar compensation tickets}
 \end{figure}
 
-La tarea bloqueante mantiene un promedio inferior de ciclos de ejecución en comparación a las demás tareas no bloqueantes en el lote.
+\begin{figure}[H]
+	\centering
+	\include{ej10-grafico-ecuanimidad2}
+	\caption{Pérdida de ecuanimidad utilizando compensation tickets}
+\end{figure}
+
+En ambos casos, la tarea bloqueante mantiene un promedio inferior de ciclos de ejecución en comparación a las demás tareas no bloqueantes en el lote, esto se debe a que durante la ejecución de los 100 ticks en la prueba, esta mantiene una parte de su tiempo bloqueada.
+
+En el test de ecuanimidad utilizando \textit{compensation tickets} puede notarse como el promedio de ciclos utilizados es mayor al promedio de ciclos utilizados sin \textit{compensation tickets}, lo que equivale en una mayor ecuanimidad en ejecución de tareas.
 
 \end{document}
