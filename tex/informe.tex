@@ -415,6 +415,13 @@ Recordar que estas configuraciones son óptimas \textbf{sólo para el lote de ta
 \end{description}
 
 
+\subsubsection{Observaciones}
+
+Notamos que los valores de ambas métricas mejoran a medida que aumenta el quantum. El tiempo de ejecución se decrementa a medida que aumenta el quantum ya que al tener quantums más largos el procesador dedica menos tiempo a realizar cambios de contexto, y esa reducción en \textit{overhead} se traduce en una finalización más temprana de las tareas. De manera similar, la eficiencia aumenta al incrementar la duración del quantum, ya que al producirse menos cambios de contexto, aumenta la relación entre el tiempo de procesador dedicado a ejecutar las tareas y el tiempo de ejecución total.
+
+Observamos además que los valores mínimos y máximos registrados para ambas métricas se acercan a medida que el quantum crece (más a la derecha en los gráficos.) Esto es así debido a la forma en la que elegimos representar los rangos de quantums en los gráficos: por ejemplo, el punto $(1, *, *, *)$ agrupa valores de quantums entre 1 y 8 para todos los cores, mientras que el punto $(7, *, *, *)$ agrupa valores entre 7 y 8; entonces el primer punto agrupa mediciones mucho más variadas que el segundo y por eso tiene valores mínimo y máximo mucho más distantes entre sí que el segundo punto.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Ejercicio 8                                                               %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
