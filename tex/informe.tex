@@ -535,7 +535,7 @@ Para evaluar la necesidad de la aplicación del los \textit{compensation tickets
 TaskBatch 100 10
 *3 TaskCPU 100
 \end{verbatim}
-El lote contiene tres tareas que utilizan la CPU (100 ticks) como su único recurso utilizado y una tarea que realiza 10 entradas/salidas y tiene una utilización de CPU de 100 ticks. La elección de este lote tiene como función demostrar como al no utilizar \textit{compensation tickets} y al tener al menos una tarea que se bloquee, el scheduler deja de ser equitativo en la selección de tareas.
+El lote contiene tres tareas que utilizan la CPU (100 ticks) como su único recurso utilizado y una tarea que realiza 10 entradas/salidas y tiene una utilización de CPU de 100 ticks. La elección de este lote tiene como función demostrar cómo al no utilizar \textit{compensation tickets} y al tener al menos una tarea que se bloquee, el scheduler deja de ser equitativo en la selección de tareas.
 
 A continuación, ejemplos de la ejecución del lote con y sin compensación:
 
