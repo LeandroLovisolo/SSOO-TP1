@@ -459,7 +459,7 @@ Como puede observarse en la figura \ref{compTicksSched}, a partir de una penalid
 
 Realizamos un test de entradas aleatorias en iguales condiciones que el experimento anterior, esta vez sin incrementar el costo de migración, obteniendo la figura \ref{RRvsRR2}
 
-Esta figura, muestra, en 400 pruebas realizadas, con penalidad baja de intercambio de core (10) cuántas veces un scheduler utiliza menos ticks para terminar su ejecución a comparación del otro.
+Esta figura muestra en 400 pruebas realizadas con penalidad baja de intercambio de core (10), cuántas veces un scheduler utiliza menos ticks para terminar su ejecución en comparación al otro.
 
 \begin{figure}[H]
 \centering
@@ -468,9 +468,9 @@ Esta figura, muestra, en 400 pruebas realizadas, con penalidad baja de intercamb
 \label{RRvsRR2}
 \end{figure}
 
-Se puede notar, como en la mayoría de los casos, en igualdad de condiciones y para costos de migración bajos, el SchedRR tarda menos que el SchedRR2 en ejecutar un lote de tareas.
+Se puede notar cómo en la mayoría de los casos, en igualdad de condiciones y para costos de migración bajos el SchedRR tarda menos que el SchedRR2 en ejecutar un lote de tareas.
 
-Esto se debe a que el algoritmo de SchedRR al tener una única cola de procesos, puede asignar siempre una tarea a un core libre, mientras que en SchedRR2, uno de los cores puede haber terminado de ejecutar su cola de tareas más rápido que el otro core, quedando este sin utilizarse.
+Esto se debe a que el algoritmo de SchedRR al tener una única cola de procesos puede asignar siempre una tarea a un core libre, mientras que en SchedRR2 uno de los cores puede haber terminado de ejecutar su cola de tareas más rápido que el otro core, quedando éste sin utilizarse.
 
 \begin{figure}[ht!]
 \centering
@@ -486,7 +486,7 @@ Esto se debe a que el algoritmo de SchedRR al tener una única cola de procesos,
 \label{schedRR2ej8}
 \end{figure}
 
-Puede notarse la diferencia mencionada en la figura \ref{schedRRej8} y la figura \ref{schedRR2ej8}. En la figura \ref{schedRRej8}, relacionada al SchedRR, cuándo el core 1 termina de ejecutar la tarea 3, pasa a ejecutar la tarea 0, dejando que el core 0 se encargue de la ejecución de la tarea 2. Por el contrario, en la figura \ref{schedRR2ej8}, al terminar el core 1 la ejecución de la tarea 3, este queda sin utilizarse, dejandole la tarea de la ejecución de las tareas 0 y 2 únicamente al core 0 el cuál, sin el core 1, necesita más ticks para completar estas tareas.
+Puede notarse la diferencia mencionada en la figura \ref{schedRRej8} y la figura \ref{schedRR2ej8}. En la figura \ref{schedRRej8}, relacionada al SchedRR, cuando el core 1 termina de ejecutar la tarea 3, pasa a ejecutar la tarea 0 dejando que el core 0 se encargue de la ejecución de la tarea 2. Por el contrario, en la figura \ref{schedRR2ej8}, al terminar el core 1 la ejecución de la tarea 3, éste queda sin utilizarse, dejándole la ejecución de las tareas 0 y 2 únicamente al core 0, el cual sin el core 1, necesita más ticks para completar estas tareas.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Ejercicio 9                                                               %%
@@ -495,9 +495,9 @@ Puede notarse la diferencia mencionada en la figura \ref{schedRRej8} y la figura
 
 \section{Ejercicio 9}
 
-Para evaluar la ecuanimidad del \textit{lottery scheduler}, planteamos la siguiente hipótesis:
+Para evaluar la ecuanimidad del \textit{lottery scheduler} planteamos la siguiente hipótesis:
 
-``Sea un lote de $k$ tareas idénticas que comienzan en el primer tick, sobre el que se realizan $n$ simulaciones idénticas,\footnote{Utilizando este scheduler con distintas semillas y fijando el resto de los parámetros.} de las cuales se observan los primeros $t$ ticks. Entonces los promedios $p_1, \ldots, p_k$ de ciclos de CPU ejecutados por cada tarea hasta el tick $t$ convergerán a alguna cantidad $p$, a medida que $n$ crece.''
+``Sea un lote de $k$ tareas idénticas que comienzan en el primer tick, sobre el cual se realizan $n$ simulaciones idénticas,\footnote{Utilizando este scheduler con distintas semillas y fijando el resto de los parámetros.} de las cuales se observan los primeros $t$ ticks. Entonces los promedios $p_1, \ldots, p_k$ de ciclos de CPU ejecutados por cada tarea hasta el tick $t$ convergerán a alguna cantidad $p$, a medida que $n$ crece.''
 
 Es decir, $\lim \limits_{n \to \infty} p_i \to p$, para todo $i$ entre $1$ y $k$.
 
@@ -511,7 +511,7 @@ Para poner a prueba nuestra hipótesis diseñamos el siguiente lote de tareas:
 
 Luego llevamos a cabo una serie de 1000 simulaciones con los siguientes parámetros: 1 core, costo de cambio de contexto 0, quantum de 5 ticks de duración, y una semilla de secuencia pseudoaleatoria distinta para cada simulación.
 
-En cada simulación observamos \textbf{los primeros 100 ticks} ejecutados por el simulador y extraímos la cantidad de ciclos de CPU utilizados por cada tarea.
+En cada simulación observamos \textbf{los primeros 100 ticks} ejecutados por el simulador y extrajimos la cantidad de ciclos de CPU utilizados por cada tarea.
 
 El siguiente gráfico muestra el promedio de ciclos por tarea en función del número de simulación.
 
@@ -523,7 +523,7 @@ El siguiente gráfico muestra el promedio de ciclos por tarea en función del n�
 
 En el gráfico se puede ver cómo los promedios por tarea tienden a un mismo valor a medida que $n$ crece. \textbf{Esto verifica nuestra hipótesis}.
 
-En particular, los promedios por tarea convergen a 25 ciclos por simulación. Esto tiene sentido, pues estamos ejecutando 4 tareas que nunca bloquean, sin costo de cambio de contexto, y como estamos observando los primeros 100 ticks simulados, el promedio esperado es de $\frac{100}{4} = 25$ ciclos por tarea.
+En particular, los promedios por tarea convergen a 25 ciclos por simulación. Esto tiene sentido, pues estamos ejecutando 4 tareas que nunca se bloquean, sin costo de cambio de contexto; y como estamos observando los primeros 100 ticks simulados, el promedio esperado es de $\frac{100}{4} = 25$ ciclos por tarea.
 
 La elección de los parámetros del experimento fue arbitraria. El número de ticks observado y la duración del quantum utilizado nos permitieron alcanzar la convergencia en una cantidad de tiempo razonable. Pueden obtenerse resultados similares con otro conjunto de parámetros luego de un número suficiente de simulaciones.
 
@@ -542,7 +542,7 @@ Para evaluar la necesidad de la aplicación del los \textit{compensation tickets
 TaskBatch 100 10
 *3 TaskCPU 100
 \end{verbatim}
-El lote contiene tres tareas que utilizan la CPU (100 ticks) como su único recurso utilizado y una tarea que realiza 10 entradas/salidas y tiene una utilización de CPU de 100 ticks. La elección de este lote tiene como función demostrar cómo al no utilizar \textit{compensation tickets} y al tener al menos una tarea que se bloquee, el scheduler deja de ser equitativo en la selección de tareas.
+El lote contiene tres tareas que utilizan la CPU (100 ticks) como único recurso y una tarea que realiza 10 entradas/salidas y tiene una utilización de CPU de 100 ticks. La elección de este lote tiene como función demostrar cómo al no utilizar \textit{compensation tickets} y al tener al menos una tarea que se bloquee, el scheduler deja de ser equitativo en la selección de tareas.
 
 A continuación, ejemplos de la ejecución del lote con y sin compensación:
 
@@ -561,9 +561,9 @@ A continuación, ejemplos de la ejecución del lote con y sin compensación:
 \label{GraphSchedLot}
 \end{figure}
 
-Puede notarse como la ejecución del lote de tareas sin compensación produce que la tarea bloqueante (0) al bloquearse por un solo tick, pierda totalmente el quantum restante y no pueda realizar el uso del CPU necesario equitativamente en comparación a las otras tareas, lo que culmina en la tarea 0 ejecutándose casi por complejo una vez terminadas las tareas restantes.
+Puede notarse cómo la ejecución del lote de tareas sin compensación produce que la tarea bloqueante (0) al bloquearse por un solo tick, pierda totalmente el quantum restante y no pueda realizar el uso del CPU que le corresponde, lo que culmina en la tarea 0 ejecutándose casi por completo una vez terminadas las tareas restantes.
 
-Por otro lado, en la ejecución del lote de tareas con compensación, puede notarse como el scheduler asigna la tarea 0 para su ejecución más veces que las demás, haciendo que el uso del CPU para las tareas sea equitativo independientemente de los bloqueos que esta produzca.
+Por otro lado, en la ejecución del lote de tareas con compensación, puede notarse cómo el scheduler asigna la tarea 0 para su ejecución más veces que las demás, haciendo que el uso del CPU para las tareas sea equitativo independientemente de los bloqueos que ésta produzca.
 
 Para una mejor comparación, realizamos el gráfico de la prueba de ecuanimidad realizado en el ejercicio 9.
 
@@ -576,11 +576,11 @@ Para una mejor comparación, realizamos el gráfico de la prueba de ecuanimidad 
 \begin{figure}[H]
 	\centering
 	\include{ej10-grafico-ecuanimidad2}
-	\caption{Pérdida de ecuanimidad utilizando compensation tickets}
+	\caption{Test de ecuanimidad utilizando compensation tickets}
 \end{figure}
 
-En ambos casos, la tarea bloqueante mantiene un promedio inferior de ciclos de ejecución en comparación a las demás tareas no bloqueantes en el lote, esto se debe a que durante la ejecución de los 100 ticks en la prueba, esta mantiene una parte de su tiempo bloqueada.
+En ambos casos la tarea bloqueante mantiene un promedio inferior de ciclos de ejecución en comparación a las demás tareas no bloqueantes en el lote. Esto se debe a que durante la ejecución de los 100 ticks en la prueba, ésta mantiene una parte de su tiempo bloqueada.
 
-En el test de ecuanimidad utilizando \textit{compensation tickets} puede notarse como el promedio de ciclos utilizados es mayor al promedio de ciclos utilizados sin \textit{compensation tickets}, lo que equivale en una mayor ecuanimidad en ejecución de tareas.
+En el test de ecuanimidad utilizando \textit{compensation tickets} puede notarse cómo el promedio de ciclos utilizados es mayor al promedio de ciclos utilizados sin \textit{compensation tickets}, lo que equivale en una mayor ecuanimidad en ejecución de tareas.
 
 \end{document}
