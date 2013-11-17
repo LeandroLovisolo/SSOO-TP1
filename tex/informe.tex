@@ -163,11 +163,11 @@ El lote de tareas utilizado para el ejercicio es el siguiente:
 \label{FCFS1Core}
 \end{figure}
 
-Puede observarse como el único core del scheduler para esta ejecución del simulador corre la tarea 0 hasta que esta se termina (1000 ticks).
+Puede observarse cómo el único core del scheduler para esta ejecución del simulador corre la tarea 0 hasta que ésta se termina (1000 ticks).
 
-Luego corre la tarea 1, la cuál realiza varios bloqueos y desbloqueos. Se puede notar el tiempo dedicado a hacer el task switch entre la tarea IDLE que corre mientras la tarea principal está bloqueada y la tarea principal.
+Luego corre la tarea 1, la cual realiza varios bloqueos y desbloqueos. Se puede notar el tiempo dedicado a hacer el task switch entre la tarea IDLE que corre mientras la tarea principal está bloqueada y la tarea principal.
 
-Termina su ejecución con la tarea 2 que también realiza bloqueos y desbloqueos, intercambiando entre esta y su tarea IDLE.
+Termina su ejecución con la tarea 2 que también realiza bloqueos y desbloqueos, intercambiando entre ésta y su tarea IDLE.
 
 \begin{figure}[ht!]
 \centering
@@ -176,7 +176,7 @@ Termina su ejecución con la tarea 2 que también realiza bloqueos y desbloqueos
 \label{FCFS2Core}
 \end{figure}
 
-Puede observarse como en la figura \ref{FCFS2Core}, relacionada a la ejecución del simulador con 2 núcleos, como cada uno se comporta adecuadamente, tomando el core 0 la tarea 0, el core 1 la tarea 1 y ejecutándola hasta su finalización. Luego, como la tarea 1 finaliza antes que la 0, el core 0 toma la tarea 2 y la ejecuta.
+Puede observarse cómo en la figura \ref{FCFS2Core}, relacionada a la ejecución del simulador con 2 núcleos, cada uno se comporta adecuadamente, tomando el core 0 la tarea 0, el core 1 la tarea 1 y ejecutándola hasta su finalización. Luego, como la tarea 1 finaliza antes que la 0, el core 0 toma la tarea 2 y la ejecuta.
 
 \begin{figure}[ht!]
 \centering
@@ -185,7 +185,7 @@ Puede observarse como en la figura \ref{FCFS2Core}, relacionada a la ejecución 
 \label{FCFS3Core}
 \end{figure}
 
-Observando la figura \ref{FCFS3Core}, puede notarse como cáda core toma cada una de las 3 tareas y las ejecuta simultáneamente hasta su finalización.
+Observando la figura \ref{FCFS3Core}, puede notarse cómo cada core toma cada una de las 3 tareas y las ejecuta simultáneamente hasta su finalización.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Ejercicio 4                                                               %%
@@ -204,7 +204,7 @@ El lote de tareas utilizado para la figura 4 es el siguiente:
 
 Puede observarse en la figura \ref{SchedRR1Core} la ejecución del simulador con el Scheduler RoundRobin con 1 core con quantum 100 y penalidad de 5 para las task switch.
 
-El gráfico muestra como las 4 tareas se ejecutan de forma cíclica, se ejecuta la tarea 0 a la 3 (haciendo cambio de tareas debido a que se les acaba el quantum) y se repite nuevamente este ciclo. Este comportamiento cíclcio de ejecución es el correspondiente al de un algoritmo de scheduling RoundRobin.
+El gráfico muestra como las 4 tareas se ejecutan de forma cíclica; se ejecuta la tarea 0 a la 3 (haciendo cambio de tareas debido a que se les acaba el quantum) y se repite nuevamente este ciclo. Este comportamiento cíclcio de ejecución es el correspondiente al de un algoritmo de scheduling RoundRobin.
 
 \begin{figure}[ht!]
 \centering
@@ -240,7 +240,7 @@ El lote de tareas utilizado para la figura \ref{SchedRR2CoreIO} es el siguiente:
 	\State TaskCPU 200
 \end{pseudo}
 
-Por último, para demostrar la correctitud de la implementación del scheduler RoundRobin ante tareas bloqueantes, en la figura \ref{SchedRR2CoreIO}, puede verse como la tarea 1 se bloquea a los 50 ticks; el scheduler la remueve del ciclo continuando la ejecución las tareas sin tenerla en cuenta hasta que se realiza su desbloqueo, se agrega nuevamente al ciclo y termina.
+Por último, para demostrar la correctitud de la implementación del scheduler RoundRobin ante tareas bloqueantes, en la figura \ref{SchedRR2CoreIO}, puede verse como la tarea 1 se bloquea a los 50 ticks; el scheduler la remueve del ciclo continuando la ejecución de las tareas sin tenerla en cuenta hasta que se realiza su desbloqueo, se agrega nuevamente al ciclo y termina.
 
 \begin{figure}[ht!]
 \centering
@@ -281,7 +281,7 @@ Sobre el cual estudiamos las métricas a continuación:
 
 Realizamos 4 experimentos para cada métrica: simulando 1, 2, 3 y 4 cores. Para cada experimento realizamos una simulación por cada una de las combinaciones de quantums posibles por core en el rango $1, \ldots, 8$.
 
-Para los casos con 2 o más cores, recorremos el rango de quantums sin evaluar dos combinaciones equivalentes. \footnote{Por ejemplo, para el caso de 2 cores: las combinaciones de quantums $(5, 10)$ y $(10, 5)$ son equivalentes.} Esto lo logramos siguiendo las secuencias a continuación:
+Para los casos con 2 ó más cores, recorremos el rango de quantums sin evaluar dos combinaciones equivalentes. \footnote{Por ejemplo, para el caso de 2 cores: las combinaciones de quantums $(5, 10)$ y $(10, 5)$ son equivalentes.} Esto lo logramos siguiendo las secuencias a continuación:
 
 \begin{itemize}
 	\item{
@@ -430,13 +430,13 @@ Observamos además que los valores mínimos y máximos registrados para ambas m�
 \section{Ejercicio 8}
 
 \subsection{Medición e hipótesis}
-Consideramos como unidad de medición los ticks realizados por los procesadores para un lote de tareas. Esta elección se debe a que, para nuestro criterio, un scheduler tiene una mejor pérformance (se desempeña mejor), si logra terminar el lote de tareas en menos tiempo (ticks) que otro.
+Consideramos como unidad de medición los ticks realizados por los procesadores para un lote de tareas. Esta elección se debe a que, para nuestro criterio, un scheduler tiene una mejor performance (se desempeña mejor), si logra terminar el lote de tareas en menos tiempo (ticks) que otro.
 
-Analizando los dos algoritmos, deducimos dos hipótesis que muestran los beneficios y los contra que poseen ambos algoritmos.
+Analizando los dos algoritmos, dedujimos dos hipótesis que muestran los beneficios y los contra que poseen ambos algoritmos.
 
 Las hipótesis son las siguientes:
 \begin{enumerate}
-\item El algoritmo de SchedRR presentaría tiempos sin uso del procesador debido a la penalidad de cambio de nucleos, mientras que el algoritmo de SchedRR2 no los tendría debido a que este no lo permite, haciendo que necesite más ticks para completar el lote de tareas.
+\item El algoritmo de SchedRR presentaría tiempos sin uso del procesador debido a la penalidad de cambio de núcleos, mientras que el algoritmo de SchedRR2 no los tendría debido a que éste no lo permite, haciendo que necesite más ticks para completar el lote de tareas.
 
 \item Teniendo una penalidad baja para migrar tareas de un core a otro,  el algoritmo SchedRR se comportaría mejor que SchedRR2 debido a que al algoritmo SchedRR2 no le es posible migrar procesos, interrumpiendo en alguna medida el paralelismo otorgado por tener múltiples cores.
 \end{enumerate}
